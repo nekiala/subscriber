@@ -19,9 +19,9 @@ This is a simple subscription platform (only RESTful APIs with MySQL) in which u
 * Body: {name: string, email: string, website: integer}
 
 
-### Notify users about a post
+### Manual post notification
 
 * Run command: **php artisan notify**
 
-### Worker
+### Automatic Post notification
 **Make sure to run php artisan queue:work**
