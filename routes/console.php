@@ -14,4 +14,4 @@ Artisan::command('notify', function () {
 
     $useCase->execute([]);
 
-})->everyFiveMinutes();
+});
