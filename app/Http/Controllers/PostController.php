@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorePostRequest;
 use App\Models\Post;
+use App\UseCases\CreatePostUseCase;
+use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class PostController extends Controller
 {
@@ -26,9 +31,22 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StorePostRequest $request, CreatePostUseCase $useCase): ?JsonResponse
     {
-        //
+        try {
+            $post = $useCase->execute($request->validated());
+
+            return response()->json([
+                'data' => $post,
+            ], 201);
+
+        } catch (Exception $e) {
+
+            Log::debug($e->getMessage());;
+            return response()->json([
+                'message' => 'Cannot create your post'
+            ], 500);
+        }
     }
 
     /**

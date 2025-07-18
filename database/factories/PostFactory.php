@@ -16,8 +16,12 @@ class PostFactory extends Factory
      */
     public function definition(): array
     {
+        $title = fake()->text(50);
+
         return [
-            //
+            'title' => $title,
+            'description' => fake()->text(255),
+            'slug' => str($title)->slug(),
         ];
     }
 }

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SubscribeUserRequest;
 use App\Models\Subscription;
+use App\UseCases\SubscribeUserUseCase;
 use Illuminate\Http\Request;
 
 class SubscriptionController extends Controller
@@ -26,9 +28,9 @@ class SubscriptionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(SubscribeUserRequest $request, SubscribeUserUseCase $useCase)
     {
-        //
+        $useCase->execute($request->validated());
     }
 
     /**

@@ -15,9 +15,10 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(\App\Models\Website::class)->constrained();
             $table->string('title')->index();
-            $table->string('url');
+            $table->string('slug');
             $table->string('image')->nullable();
             $table->string('description');
+            $table->boolean('is_published')->default(false);
             $table->timestamps();
         });
     }
