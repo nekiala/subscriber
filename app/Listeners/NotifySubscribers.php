@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\PostCreated;
+use App\Models\Post;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
@@ -21,6 +22,11 @@ class NotifySubscribers implements ShouldQueue
      */
     public function handle(PostCreated $event): void
     {
-        //
+        /** @var Post $post */
+        $post = $event->post;
+
+        // get subscribed users
+
+
     }
 }

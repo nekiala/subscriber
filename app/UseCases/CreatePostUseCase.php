@@ -19,8 +19,9 @@ readonly class CreatePostUseCase implements BaseUseCaseInterface
     {
         $payload = $this->service->validate($data);
 
-        $this->repository->create($payload);
+        $post = $this->repository->create($payload);
 
+        $this->service->notifySubscribers($post);
 
         return $this->service->getResponse($payload);
     }

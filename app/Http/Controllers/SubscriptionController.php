@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\SubscribeUserRequest;
 use App\Models\Subscription;
 use App\UseCases\SubscribeUserUseCase;
+use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Log;
 
 class SubscriptionController extends Controller
 {
@@ -28,9 +31,24 @@ class SubscriptionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(SubscribeUserRequest $request, SubscribeUserUseCase $useCase)
+    public function store(SubscribeUserRequest $request, SubscribeUserUseCase $useCase): ?JsonResponse
     {
-        $useCase->execute($request->validated());
+        try {
+
+            $useCase->execute($request->validated());
+
+            return response()->json([
+                'message' => 'Congratulations, You are now subscribed!'
+            ]);
+
+        } catch (Exception $e) {
+
+            Log::debug($e->getMessage());
+
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**

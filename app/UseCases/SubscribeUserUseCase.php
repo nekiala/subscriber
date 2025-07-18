@@ -3,26 +3,42 @@
 namespace App\UseCases;
 
 use App\Contracts\BaseUseCaseInterface;
-use App\Repositories\NotificationRepository;
-use App\Repositories\PostRepository;
 use App\Repositories\SubscriptionRepository;
 use App\Repositories\UserRepository;
 use App\Services\SubscriptionService;
+use RuntimeException;
 
-class SubscribeUserUseCase implements BaseUseCaseInterface
+readonly class SubscribeUserUseCase implements BaseUseCaseInterface
 {
     public function __construct(
-        private UserRepository $userRepository,
-        private SubscriptionRepository $subscriptionRepository,
-        private NotificationRepository $notificationRepository,
-        private PostRepository $postRepository,
-        private SubscriptionService $service
+        private SubscriptionRepository $repository,
+        private SubscriptionService $service,
+        private UserRepository $userRepository
     )
     {
     }
 
-    public function execute(array $data)
+    public function execute(array $data): void
     {
-        // TODO: Implement execute() method.
+        // create a user if not exist
+
+        $userData = $this->service->prepareSubscriberData($data);
+        $user = $this->userRepository->create($userData);
+
+        $data = array_merge($data, ['id' => $user->id]);
+
+        // check a user's subscription exists
+        if ($this->repository->userAlreadySubscribed(
+            $this->service->prepareSubscriptionCheck($data)
+        )) {
+
+            throw new RuntimeException('User already subscribed');
+        }
+
+
+        $payload = $this->service->validateSubscriptionData($data);
+
+
+        $this->repository->create($payload);
     }
 }

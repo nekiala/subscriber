@@ -18,7 +18,7 @@ class PostCreated
     /**
      * Create a new event instance.
      */
-    public function __construct(private readonly Post $post)
+    public function __construct(public readonly Post $post)
     {
         //
     }
