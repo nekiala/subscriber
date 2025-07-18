@@ -19,6 +19,11 @@ class Post extends Model
         'slug'
     ];
 
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
+
     public function website(): BelongsTo
     {
         return $this->belongsTo(Website::class);

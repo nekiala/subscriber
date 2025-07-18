@@ -3,8 +3,10 @@
 namespace App\UseCases;
 
 use App\Contracts\BaseUseCaseInterface;
+use App\Notifications\SendPostNotification;
 use App\Repositories\PostRepository;
 use App\Repositories\SubscriptionRepository;
+use Log;
 
 readonly class SendPostNotificationUseCase implements BaseUseCaseInterface
 {
@@ -37,11 +39,11 @@ readonly class SendPostNotificationUseCase implements BaseUseCaseInterface
 
                 $subscribers->each(function ($subscriber) use ($unpublishedPost) {
 
-                    \Log::debug("sending notification to {$subscriber->user->email}");
+                    Log::debug("sending notification to {$subscriber->user->email}");
 
-                    $subscriber->user->notify($unpublishedPost);
+                    $subscriber->user->notify(new SendPostNotification($unpublishedPost));
 
-                    \Log::debug("notification sent to {$subscriber->user->email}");
+                    Log::debug("notification sent to {$subscriber->user->email}");
                 });
             }
         });

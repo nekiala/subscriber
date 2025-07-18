@@ -2,19 +2,20 @@
 
 namespace App\Notifications;
 
+use App\Models\Post;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class NotifySubscribers extends Notification
+class SendPostNotification extends Notification
 {
     use Queueable;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct()
+    public function __construct(private readonly Post $post)
     {
         //
     }
@@ -35,8 +36,10 @@ class NotifySubscribers extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->line('The introduction to the notification.')
-            ->action('Notification Action', url('/'))
+            ->subject('New Post from ' . $this->post->website->name)
+            ->line('A new post has been created.')
+            ->line($this->post->title)
+            ->action('Read', route('posts.show', $this->post->slug))
             ->line('Thank you for using our application!');
     }
 
