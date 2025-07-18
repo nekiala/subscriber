@@ -2,10 +2,11 @@
 
 namespace App\Repositories;
 
+use App\Contracts\Repositories\SubscriptionRepositoryInterface;
 use App\Models\Subscription;
 use Illuminate\Support\Collection;
 
-class SubscriptionRepository
+class SubscriptionRepository implements SubscriptionRepositoryInterface
 {
 
     public function create(array $payload): void

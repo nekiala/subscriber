@@ -2,13 +2,14 @@
 
 namespace App\Repositories;
 
+use App\Contracts\Repositories\PostRepositoryInterface;
 use App\Models\Post;
 use Illuminate\Support\Collection;
 
-class PostRepository
+class PostRepository implements PostRepositoryInterface
 {
 
-    public function create($payload): Post
+    public function create(array $payload): Post
     {
         return Post::create($payload);
     }
