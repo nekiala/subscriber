@@ -45,6 +45,10 @@ readonly class SendPostNotificationUseCase implements BaseUseCaseInterface
 
                     Log::debug("notification sent to {$subscriber->user->email}");
                 });
+
+                // update the "post" status
+                // could use the repository...
+                $unpublishedPost->update(['is_published' => true]);
             }
         });
 
