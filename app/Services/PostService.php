@@ -48,8 +48,8 @@ class PostService
      * @param Post $post The post instance to notify subscribers about.
      * @return void
      */
-    public function notifySubscribers(Post $post): void
+    /*public function notifySubscribers(Post $post): void
     {
         PostCreated::dispatch($post);
-    }
+    }*/
 }

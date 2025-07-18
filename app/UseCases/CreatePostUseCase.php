@@ -22,7 +22,7 @@ readonly class CreatePostUseCase implements BaseUseCaseInterface
 
         $post = $this->repository->create($payload);
 
-        $this->service->notifySubscribers($post);
+        //$this->service->notifySubscribers($post);
 
         // dispatch notification
         ProcessPostNotification::dispatch($post)->delay(now()->addSeconds(10));
