@@ -2,7 +2,9 @@
 
 namespace App\Services;
 
-class WebsiteService
+use App\Contracts\Services\WebsiteServiceInterface;
+
+class WebsiteService implements WebsiteServiceInterface
 {
 
 }

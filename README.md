@@ -8,6 +8,8 @@ This is a simple subscription platform (only RESTful APIs with MySQL) in which u
 1. Set up your preferred database
 2. Run php artisan php migrate --seed
 
+Fake websites will be created. You can configure how many websites you want to create, on **DatabaseSeeder.php**
+
 ### Create a post
 * Method: POST
 * Endpoint: /create-post
@@ -19,9 +21,10 @@ This is a simple subscription platform (only RESTful APIs with MySQL) in which u
 * Body: {name: string, email: string, website: integer}
 
 
-### Manual post notification
+### Manual Post notification
 
 * Run command: **php artisan notify**
 
 ### Automatic Post notification
-**Make sure to run php artisan queue:work**
+Make sure to run **php artisan queue:work** or **php artisan queue:listen** <br>
+

@@ -39,7 +39,7 @@ class SubscriptionController extends Controller
 
             return response()->json([
                 'message' => 'Congratulations, You are now subscribed!'
-            ]);
+            ], 201);
 
         } catch (Exception $e) {
 

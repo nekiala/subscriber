@@ -3,17 +3,17 @@
 namespace App\UseCases;
 
 use App\Contracts\BaseUseCaseInterface;
-use App\Repositories\SubscriptionRepository;
-use App\Repositories\UserRepository;
-use App\Services\SubscriptionService;
+use App\Contracts\Repositories\SubscriptionRepositoryInterface;
+use App\Contracts\Repositories\UserRepositoryInterface;
+use App\Contracts\Services\SubscriptionServiceInterface;
 use RuntimeException;
 
 readonly class SubscribeUserUseCase implements BaseUseCaseInterface
 {
     public function __construct(
-        private SubscriptionRepository $repository,
-        private SubscriptionService $service,
-        private UserRepository $userRepository
+        private SubscriptionRepositoryInterface $repository,
+        private SubscriptionServiceInterface $service,
+        private UserRepositoryInterface $userRepository
     )
     {
     }

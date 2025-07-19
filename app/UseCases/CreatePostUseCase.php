@@ -3,15 +3,15 @@
 namespace App\UseCases;
 
 use App\Contracts\BaseUseCaseInterface;
+use App\Contracts\Repositories\PostRepositoryInterface;
+use App\Contracts\Services\PostServiceInterface;
 use App\Jobs\ProcessPostNotification;
-use App\Repositories\PostRepository;
-use App\Services\PostService;
 
 readonly class CreatePostUseCase implements BaseUseCaseInterface
 {
     public function __construct(
-        private PostService    $service,
-        private PostRepository $repository
+        private PostServiceInterface    $service,
+        private PostRepositoryInterface $repository
     )
     {
     }

@@ -12,4 +12,5 @@ interface PostRepositoryInterface extends BaseRepositoryInterface
     public function create(array $payload): Post;
 
     public function getUnpublishedPosts($limit = 5): Collection;
+
 }

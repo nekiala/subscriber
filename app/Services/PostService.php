@@ -2,11 +2,12 @@
 
 namespace App\Services;
 
+use App\Contracts\Services\PostServiceInterface;
 use App\Events\PostCreated;
 use App\Models\Post;
 use RuntimeException;
 
-class PostService
+class PostService implements PostServiceInterface
 {
 
     /**
@@ -43,13 +44,13 @@ class PostService
     }
 
     /**
-     * Notify all subscribers about a new post creation by dispatching the PostCreated event.
+     * Notify all subscribers about a new Post creation by dispatching the PostCreated event.
      *
-     * @param Post $post The post instance to notify subscribers about.
+     * @param Post $post The Post instance to notify subscribers about.
      * @return void
      */
-    /*public function notifySubscribers(Post $post): void
+    public function notifySubscribers(Post $post): void
     {
         PostCreated::dispatch($post);
-    }*/
+    }
 }

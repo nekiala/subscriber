@@ -2,17 +2,18 @@
 
 namespace App\Repositories;
 
+use App\Contracts\Repositories\UserRepositoryInterface;
 use App\Models\User;
 
-class UserRepository
+class UserRepository implements UserRepositoryInterface
 {
 
-    public function create(array $userData): User
+    public function create(array $payload): User
     {
-        if (User::where('email', $userData['email'])->exists()) {
-            return User::where('email', $userData['email'])->first();
+        if (User::where('email', $payload['email'])->exists()) {
+            return User::where('email', $payload['email'])->first();
         }
 
-        return User::create($userData);
+        return User::create($payload);
     }
 }

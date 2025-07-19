@@ -3,16 +3,16 @@
 namespace App\UseCases;
 
 use App\Contracts\BaseUseCaseInterface;
+use App\Contracts\Repositories\PostRepositoryInterface;
+use App\Contracts\Repositories\SubscriptionRepositoryInterface;
 use App\Notifications\SendPostNotification;
-use App\Repositories\PostRepository;
-use App\Repositories\SubscriptionRepository;
 use Log;
 
 readonly class SendPostNotificationUseCase implements BaseUseCaseInterface
 {
     public function __construct(
-        private PostRepository $repository,
-        private SubscriptionRepository $subscriptionRepository
+        private PostRepositoryInterface $repository,
+        private SubscriptionRepositoryInterface $subscriptionRepository
     )
     {
 
@@ -21,7 +21,7 @@ readonly class SendPostNotificationUseCase implements BaseUseCaseInterface
 
     public function execute(array $data): void
     {
-        // get unpublished posts
+        // get 5 unpublished posts
         $unpublishedPosts = $this->repository->getUnpublishedPosts();
 
         // extract websites
@@ -31,9 +31,15 @@ readonly class SendPostNotificationUseCase implements BaseUseCaseInterface
         });
 
         // get subscribed users from these websites
+        // notify them. the task is running in the background
         dispatch(function () use ($websites, $unpublishedPosts) {
 
             $subscribers = $this->subscriptionRepository->getSubscribers(array_unique($websites));
+
+            if ($subscribers->isEmpty()) {
+                Log::debug('no subscribers found');
+                return;
+            }
 
             foreach ($unpublishedPosts as $unpublishedPost) {
 

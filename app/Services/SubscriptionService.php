@@ -2,10 +2,11 @@
 
 namespace App\Services;
 
+use App\Contracts\Services\SubscriptionServiceInterface;
 use Hash;
 use RuntimeException;
 
-class SubscriptionService
+class SubscriptionService implements SubscriptionServiceInterface
 {
 
     public function prepareSubscriptionCheck(array $data): array
