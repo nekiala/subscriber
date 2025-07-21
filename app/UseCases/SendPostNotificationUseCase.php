@@ -25,37 +25,37 @@ readonly class SendPostNotificationUseCase implements BaseUseCaseInterface
         $unpublishedPosts = $this->repository->getUnpublishedPosts();
 
         // extract websites
-        $websites = [];
-        $unpublishedPosts->each(function ($post) use (&$websites) {
-            $websites[] = $post->website_id;
-        });
+        $websiteIds = $unpublishedPosts->pluck('website_id')->unique()->toArray();
+
 
         // get subscribed users from these websites
         // notify them. the task is running in the background
-        dispatch(function () use ($websites, $unpublishedPosts) {
+        dispatch(function () use ($websiteIds, $unpublishedPosts) {
 
-            $subscribers = $this->subscriptionRepository->getSubscribers(array_unique($websites));
+            $this->subscriptionRepository->getSubscribers($websiteIds, 100, function ($subscribers) use ($unpublishedPosts) {
 
-            if ($subscribers->isEmpty()) {
-                Log::debug('no subscribers found');
-                return;
-            }
+                if ($subscribers->isEmpty()) {
+                    Log::debug('no subscribers found');
+                    return;
+                }
 
-            foreach ($unpublishedPosts as $unpublishedPost) {
+                foreach ($unpublishedPosts as $unpublishedPost) {
 
-                $subscribers->each(function ($subscriber) use ($unpublishedPost) {
+                    $subscribers->each(function ($subscriber) use ($unpublishedPost) {
 
-                    Log::debug("sending notification to {$subscriber->user->email}");
+                        Log::debug("sending notification to {$subscriber->user->email}");
 
-                    $subscriber->user->notify(new SendPostNotification($unpublishedPost));
+                        $subscriber->user->notify(new SendPostNotification($unpublishedPost));
 
-                    Log::debug("notification sent to {$subscriber->user->email}");
-                });
+                        Log::debug("notification sent to {$subscriber->user->email}");
+                    });
 
-                // update the "post" status
-                // could use the repository...
-                $unpublishedPost->update(['is_published' => true]);
-            }
+                    // update the "post" status
+                    // could use the repository...
+                    $unpublishedPost->update(['is_published' => true]);
+                }
+
+            });
         });
 
     }
