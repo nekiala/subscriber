@@ -4,7 +4,6 @@ namespace App\Repositories;
 
 use App\Contracts\Repositories\SubscriptionRepositoryInterface;
 use App\Models\Subscription;
-use Illuminate\Support\Collection;
 
 class SubscriptionRepository implements SubscriptionRepositoryInterface
 {
